@@ -7,7 +7,6 @@ import time
 from datetime import datetime
 import json
 import os
-import slugify
 
 class bcolors:
     HEADER = '\033[95m'
