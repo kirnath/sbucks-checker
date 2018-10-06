@@ -20,7 +20,7 @@ class bcolors:
 
 print "Choose Service\n1. Mass Checking\n2. Single Check"
 data = int(raw_input("Choose: "))
-url = "http://api.juragancode.com/developed.php"
+url = "http://api.juragancode.com/sbux.php"
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
 			'Accept': '*/*'}
 if data == 1:
