@@ -1,5 +1,5 @@
 # Kirnath x ZeroByte.ID
-HandCrafted with Love and Python
+HandCrafted with Love, Python and PHP
 
 # How to Install ?
 1. git clone https://github.com/indrha7x/sbucks-checker.git
